@@ -20,11 +20,11 @@ namespace BreakOut
                 return location;
             }
         }
-        public Brick(Texture2D texture, Rectangle location, Color tint) {
+        public Brick(Texture2D texture, Rectangle location, Color tint, bool alive) {
             this.texture = texture;
             this.location = location;
             this.tint = tint;
-            this.alive = true;
+            this.alive = alive;
         }
         public void CheckCollision(Ball ball){
 
@@ -36,7 +36,7 @@ namespace BreakOut
         public void Draw(SpriteBatch spriteBatch)
         {
             if (alive)
-                spriteBatch.Draw(texture, location, tint);
+                spriteBatch.Draw(this.texture, this.location, this.tint);
         }
     }       
 }
