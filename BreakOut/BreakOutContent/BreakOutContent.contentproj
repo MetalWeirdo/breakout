@@ -42,15 +42,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="paddle.png">
-      <Name>paddle</Name>
+    <Compile Include="paddle_normal.png">
+      <Name>paddle_normal</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ball.png">
-      <Name>ball</Name>
+    <Compile Include="ball_normal.png">
+      <Name>ball_normal</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="brick.png">
+      <Name>brick</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -21,14 +21,25 @@ namespace BreakOut
 
         Ball ball;
         Paddle paddle;
-        Rectangle screenRectangle;
+        Rectangle screen;
+
+        // Define default bricks
+
+        int bricksW = 10;
+        int bricksH = 5;
+        Texture2D brickImage;
+
+        Brick[,] bricks;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            screenRectangle = new Rectangle(
+            graphics.PreferredBackBufferWidth = 750;
+            graphics.PreferredBackBufferHeight = 600;
+
+            screen = new Rectangle(
                 0,
                 0,
                 graphics.PreferredBackBufferWidth,
@@ -57,11 +68,13 @@ namespace BreakOut
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D tempTexture = Content.Load<Texture2D>("paddle");
-            paddle = new Paddle(tempTexture, screenRectangle);
+            Texture2D tempTexture = Content.Load<Texture2D>("paddle_normal");
+            paddle = new Paddle(tempTexture, screen);
 
-            tempTexture = Content.Load<Texture2D>("ball");
-            ball = new Ball(tempTexture, screenRectangle);
+            tempTexture = Content.Load<Texture2D>("ball_normal");
+            ball = new Ball(tempTexture, screen);
+
+            brickImage = Content.Load<Texture2D>("brick");
 
             StartGame();
         }
@@ -70,6 +83,41 @@ namespace BreakOut
         {
             paddle.SetInStartPosition();
             ball.SetInStartPosition(paddle.GetBounds());
+
+            bricks = new Brick[bricksW, bricksH];
+
+            for (int y = 0; y < bricksH; y++){
+                Color tint = Color.Beige;
+
+                //switch (y) { 
+                  //  case 0:
+                    //    tint = Color.Blue;
+                      //  break;
+                    //case 1:
+                     //   tint = Color.Red;
+                    //    break;
+                   // case 2:
+                   //     tint = Color.Green;
+                    //    break;
+                    //case 3:
+                    //    tint = Color.Yellow;
+                     //   break;
+                    //case 4:
+                    //    tint = Color.Purple;
+                     //   break;
+                //}
+                for (int x = 0; x < bricksW; x++){
+                    bricks[x, y] = new Brick(
+                    brickImage,
+                    new Rectangle(
+                    x * brickImage.Width,
+                    y * brickImage.Height,
+                    brickImage.Width,
+                    brickImage.Height),
+                    tint);
+                }
+            }
+             
         }
 
         /// <summary>
@@ -109,12 +157,17 @@ namespace BreakOut
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
 
+            foreach (Brick brick in bricks)
+                brick.Draw(spriteBatch);
+
             paddle.Draw(spriteBatch);
             ball.Draw(spriteBatch);
+
+            
 
             spriteBatch.End();
 
