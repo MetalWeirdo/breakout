@@ -89,23 +89,6 @@ namespace BreakOut
             for (int y = 0; y < bricksH; y++){
                 Color tint = Color.Beige;
 
-                //switch (y) { 
-                  //  case 0:
-                    //    tint = Color.Blue;
-                      //  break;
-                    //case 1:
-                     //   tint = Color.Red;
-                    //    break;
-                   // case 2:
-                   //     tint = Color.Green;
-                    //    break;
-                    //case 3:
-                    //    tint = Color.Yellow;
-                     //   break;
-                    //case 4:
-                    //    tint = Color.Purple;
-                     //   break;
-                //}
                 for (int x = 0; x < bricksW; x++){
                     bricks[x, y] = new Brick(
                     brickImage,
@@ -143,7 +126,13 @@ namespace BreakOut
             paddle.Update();
             ball.Update();
 
+            foreach (Brick brick in bricks)
+            {
+                brick.CheckCollision(ball);
+            }
+
             ball.PaddleCollision(paddle.GetBounds());
+
 
             if (ball.OffBottom())
                 StartGame();

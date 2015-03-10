@@ -26,8 +26,12 @@ namespace BreakOut
             this.tint = tint;
             this.alive = true;
         }
-        public void CheckCollision(Ball ball)
-        {
+        public void CheckCollision(Ball ball){
+
+            if (this.alive && ball.Bounds.Intersects(this.location)) { 
+                this.alive = false;
+                ball.deflect(this);
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
