@@ -13,7 +13,8 @@ namespace BreakOut
     {
         Vector2 position;
         Vector2 motion;
-        float paddleSpeed = 8f;
+        public float default_speed = 10;
+        public float paddleSpeed = 10;
 
         KeyboardState keyboardState;
         GamePadState gamePadState;

@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace BreakOut{
     class Ball{
@@ -12,8 +13,8 @@ namespace BreakOut{
         Vector2 position;
 
         Rectangle bounds;
-
-        float speed = 4;
+        public float default_speed = 4;
+        public float speed = 4;
         bool collided;
         
         Texture2D texture;
@@ -31,10 +32,10 @@ namespace BreakOut{
             this.texture = texture;
             this.screenBounds = screenBounds;
         }
-        public void Update(){
+        public void Update(SoundEffectInstance wallHit){
             this.collided = false;
             this.position += this.motion * this.speed;
-            CheckWallCollision();
+            CheckWallCollision(wallHit);
         }
 
         public void deflect(Brick brick) {
@@ -43,18 +44,21 @@ namespace BreakOut{
                 this.motion.Y *= -1;
             }
         }
-        private void CheckWallCollision(){
+        private void CheckWallCollision(SoundEffectInstance wallHit){
             if (this.position.X < 0){
                 this.position.X = 0;
                 this.motion.X *= -1;
+                wallHit.Play();
             }
             if (this.position.X + this.texture.Width > this.screenBounds.Width){
                 this.position.X = screenBounds.Width - texture.Width;
                 this.motion.X *= -1;
+                wallHit.Play();
             }
             if (this.position.Y < 0){
                 this.position.Y = 0;
                 this.motion.Y *= -1;
+                wallHit.Play();
             }
         }
         public void SetInStartPosition(Rectangle paddleLocation){
@@ -67,7 +71,7 @@ namespace BreakOut{
                 return true;
             return false;
         }
-        public void PaddleCollision(Rectangle paddleLocation){
+        public void PaddleCollision(Rectangle paddleLocation,SoundEffectInstance paddleHit){
             Rectangle ballLocation = new Rectangle(
             (int)this.position.X,
             (int)this.position.Y,
@@ -75,7 +79,23 @@ namespace BreakOut{
             this.texture.Height);
             if (paddleLocation.Intersects(ballLocation)){
                 this.position.Y = paddleLocation.Y - this.texture.Height;
+                if (this.motion.X < 0)
+                {
+                    if ((paddleLocation.X + paddleLocation.Width) - ballLocation.X < 30)
+                    {
+                        this.motion.X *= -1;
+                    }
+                }
+                else {
+                    if (ballLocation.X - paddleLocation.X < 30)
+                    {
+                        this.motion.X *= -1;
+                    }
+                }
+                
                 this.motion.Y *= -1;
+                paddleHit.Play();
+                
             }
         }
         public void Draw(SpriteBatch spriteBatch){
